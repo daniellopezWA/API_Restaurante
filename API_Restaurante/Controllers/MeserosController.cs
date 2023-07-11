@@ -32,7 +32,7 @@ namespace API_Restaurante.Controllers
             string query = @"
                             select id, nombre, apellido, cedula from Mesero";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+            string sqlDataSource = _configuration.GetConnectionString("RestaurantAppCon");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -64,7 +64,7 @@ namespace API_Restaurante.Controllers
                             GROUP BY Mes.Nombre, mes.Apellido
                             ORDER BY totalPropina DESC;";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+            string sqlDataSource = _configuration.GetConnectionString("RestaurantAppCon");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {

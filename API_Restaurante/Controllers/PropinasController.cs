@@ -28,10 +28,9 @@ namespace API_Restaurante.Controllers
         {
             string query = @"
                             select p.id, idMesa, idMesero, ValorPropina, fecha 
-                            from Propinas as p
-                            inner join Mesas on";
+                            from Propinas as p";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+            string sqlDataSource = _configuration.GetConnectionString("RestaurantAppCon");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -59,7 +58,7 @@ namespace API_Restaurante.Controllers
                             inner join Mesero as Mes
                             on p.idMesero= mes.id";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+            string sqlDataSource = _configuration.GetConnectionString("RestaurantAppCon");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -81,7 +80,7 @@ namespace API_Restaurante.Controllers
         {
             string query = @"SELECT AVG(ValorPropina) AS Promedio FROM Propinas WHERE Fecha BETWEEN @fechaInicio AND @fechaFin ";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+            string sqlDataSource = _configuration.GetConnectionString("RestaurantAppCon");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -107,7 +106,7 @@ namespace API_Restaurante.Controllers
                             insert into Propinas 
                             values (@idMesa, @idMesero, @ValorPropina, @Fecha)";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+            string sqlDataSource = _configuration.GetConnectionString("RestaurantAppCon");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
