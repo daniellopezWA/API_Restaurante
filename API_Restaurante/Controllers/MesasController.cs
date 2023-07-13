@@ -50,6 +50,11 @@ namespace API_Restaurante.Controllers
 
         public JsonResult Post(Fechas fechas)
         {
+            if (fechas.FechaInicio == null | fechas.FechaFin == null)
+            {
+                Response.StatusCode = 400;
+                return new JsonResult(new { error = "fechas invalidas o no Proporcionadas" });
+            }
             string query = @"
                             select top 1 m.descripccion, SUM(p.ValorPropina) as totalPropina 
                             from propinas as p 

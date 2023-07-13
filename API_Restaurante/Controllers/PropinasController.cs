@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using API_Restaurante.Models;
+using System.Globalization;
 
 namespace API_Restaurante.Controllers
 {
@@ -27,8 +28,8 @@ namespace API_Restaurante.Controllers
         public JsonResult Get()
         {
             string query = @"
-                            select p.id, idMesa, idMesero, ValorPropina, fecha 
-                            from Propinas as p";
+                            select id, idMesa, idMesero, ValorPropina, fecha 
+                            from Propinas";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("RestaurantAppCon");
             SqlDataReader myReader;
@@ -78,6 +79,13 @@ namespace API_Restaurante.Controllers
         [HttpPost("Promedio")]
         public JsonResult Post1(Fechas fechas)
         {
+            string formatoFecha = "yyyy-MM-dd";
+            if (fechas.FechaInicio == null || fechas.FechaFin == null || !DateTime.TryParseExact(fechas.FechaInicio, formatoFecha, CultureInfo.InvariantCulture, DateTimeStyles.None, out _) || !DateTime.TryParseExact(fechas.FechaFin, formatoFecha, CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+
+            {
+                Response.StatusCode = 400;
+                return new JsonResult(new { error = "fechas invalidas o no Proporcionadas" });
+            }
             string query = @"SELECT AVG(ValorPropina) AS Promedio FROM Propinas WHERE Fecha BETWEEN @fechaInicio AND @fechaFin ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("RestaurantAppCon");
@@ -102,6 +110,11 @@ namespace API_Restaurante.Controllers
         [HttpPost]
         public JsonResult Post(Propina propina)
         {
+            if (propina.idMesero == 0 | propina.idMesa== 0| propina.ValorPropina.ToString() == null | propina.Fecha == null)
+            {
+                Response.StatusCode = 400;
+                return new JsonResult(new { error = "datos invalidos o no Proporcionados" });
+            }
             string query = @"
                             insert into Propinas 
                             values (@idMesa, @idMesero, @ValorPropina, @Fecha)";
